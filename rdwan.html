@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequential Number History Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #000; /* Black background */
+            color: #FF4500; /* Red text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        #result-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px; /* Space between result and inputs */
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .input-section {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            overflow-y: auto; /* Enable scrolling if content overflows */
+            height: 500px; /* Set a fixed height for input sections */
+        }
+
+        .input-section input {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        #history {
+            margin-top: 20px;
+        }
+
+        .history-item {
+            border: 1px solid #FF4500; /* Red border for history items */
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff; /* White background for history items */
+            color: #FF4500; /* Red text for history items */
+        }
+
+        .history-item p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sequential Number History Calculator</h1>
+
+    <div id="result-container">
+        <h2 id="result">Result:</h2>
+    </div>
+
+    <div class="container">
+        <div class="input-section" id="input1-section">
+            <h2>+7isab</h2>
+            <!-- 100 input boxes for the first input -->
+            <!-- Generated dynamically using JavaScript -->
+        </div>
+
+        <div class="input-section" id="input2-section">
+            <h2>-7isab</h2>
+            <!-- 100 input boxes for the second input -->
+            <!-- Generated dynamically using JavaScript -->
+        </div>
+    </div>
+
+    <div id="history">
+        <h2>History:</h2>
+        <!-- History entries will be dynamically added here -->
+    </div>
+
+    <script>
+        // Function to dynamically add input boxes
+        function addInputs(sectionId, className, count) {
+            const section = document.getElementById(sectionId);
+            for (let i = 1; i <= count; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = className;
+                input.placeholder = `e.g. ${i}`;
+                input.addEventListener('input', updateResults); // Add event listener to each input
+                section.appendChild(input);
+            }
+        }
+
+        // Function to update results and history
+        function updateResults() {
+            const inputs1 = document.querySelectorAll('#input1-section .input1');
+            const inputs2 = document.querySelectorAll('#input2-section .input2');
+
+            const input1History = Array.from(inputs1)
+                .map(input => parseFloat(input.value.trim()))
+                .filter(num => !isNaN(num));
+
+            const input2History = Array.from(inputs2)
+                .map(input => parseFloat(input.value.trim()))
+                .filter(num => !isNaN(num));
+
+            const sum1 = input1History.reduce((acc, num) => acc + num, 0);
+            const sum2 = input2History.reduce((acc, num) => acc + num, 0);
+
+            const result = sum1 - sum2;
+
+            document.getElementById('result').textContent = `Result: ${result}`;
+
+            updateHistory(input1History, input2History);
+        }
+
+        // Function to update history display
+        function updateHistory(input1History, input2History) {
+            const historyContainer = document.getElementById('history');
+            historyContainer.innerHTML = ''; // Clear previous history
+
+            const entry = document.createElement('div');
+            entry.className = 'history-item';
+            entry.innerHTML = `
+                <p><strong>+7isab History:</strong> ${input1History.join(', ')}</p>
+                <p><strong>-7isab History:</strong> ${input2History.join(', ')}</p>
+            `;
+            historyContainer.appendChild(entry);
+        }
+
+        // Initialize input boxes on page load
+        window.onload = function() {
+            addInputs('input1-section', 'input1', 100);
+            addInputs('input2-section', 'input2', 100);
+        }
+    </script>
+</body>
+</html>
